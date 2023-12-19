@@ -19,26 +19,26 @@ data_visual = data
 
 data.head()
 
+
+# Preprocessing the data
+
 # Encode the categorical labels as integers.
-#
 # Details:
-# This stage is necessary if your classification label is represented as a
-# string since Keras expects integer classification labels.
-# When using `pd_dataframe_to_tf_dataset` (see below), this step can be skipped.
+# This stage is necessary if your classification label is represented as a string since Keras expects integer classification labels.
 
 # Name of the label column.
 label = "Status"
 
+#Encode label
 classes = data[label].unique().tolist()
 print(f"Label classes: {classes}")
 
+#Mapping
 data[label] = data[label].map(classes.index)
-# Define features (X) and target variable (y)
 
+# Define features (X) and target variable (y)
 X = data.iloc[:, 0:4].values
 y = data.iloc[:, 4].values
-
-X
 
 # Split the dataset into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -47,8 +47,6 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # scaler = MinMaxScaler()
 # X_train = scaler.fit_transform(X_train)
 # X_test = scaler.transform(X_test)
-
-X_train
 
 # Define the neural network model
 model = Sequential()
@@ -64,7 +62,7 @@ model.add(Dense(4, activation='softmax')) # output layer with 4 neurons (one for
 model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train the model
-model.fit(X_train, y_train, epochs=1000, batch_size=32, validation_split=0.2)
+model.fit(X_train, y_train, epochs=1000, batch_size=32, validation_split=0.12)
 
 # evaluate the model
 loss, accuracy = model.evaluate(X_test, y_test)
